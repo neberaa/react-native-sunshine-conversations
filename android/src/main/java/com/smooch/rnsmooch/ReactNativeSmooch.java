@@ -65,7 +65,7 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void show() {
-        ConversationActivity.show(getReactApplicationContext(), Intent.FLAG_ACTIVITY_NEW_TASK);
+        ConversationActivity.builder().withFlags(Intent.FLAG_ACTIVITY_NEW_TASK).show(getReactApplicationContext());
     }
 
     @ReactMethod
@@ -124,8 +124,8 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
         return props;
     }
 
-    class CustomMessageDelegate implements MessageModifierDelegate {
-        Message beforeSend(ConversationDetails conversationDetails, Message message) {
+    abstract class CustomMessageDelegate implements MessageModifierDelegate {
+        public Message beforeSend(ConversationDetails conversationDetails, Message message) {
             Map<String, Object> meta = new HashMap<>();
             meta.put("short_property_code", "DVU001");
             message.setMetadata(meta);
