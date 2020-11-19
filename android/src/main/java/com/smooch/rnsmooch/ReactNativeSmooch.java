@@ -39,14 +39,11 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
     public void login(String userId, String jwt, final Promise promise) {
         Smooch.login(userId, jwt, new SmoochCallback<LoginResult>() {
             @Override
-            public void run(Response<LoginResult> response) {
-                if (promise != null) {
-                    if (response.getError() != null) {
-                        promise.reject("" + response.getStatus(), response.getError());
-                        return;
-                    }
-
+            public void run(@NonNull Response<LoginResult> response) {
+                if (response.getData() == InitializationStatus.SUCCESS) {
                     promise.resolve(null);
+                } else {
+                    promise.reject(response.getError());
                 }
             }
         });
@@ -56,13 +53,12 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
     public void logout(final Promise promise) {
         Smooch.logout(new SmoochCallback<LogoutResult>() {
             @Override
-            public void run(Response<LogoutResult> response) {
-                if (response.getError() != null) {
-                    promise.reject("" + response.getStatus(), response.getError());
-                    return;
+            public void run(@NonNull Response<LogoutResult> response) {
+                if (response.getData() == InitializationStatus.SUCCESS) {
+                    promise.resolve(null);
+                } else {
+                    promise.reject(response.getError());
                 }
-
-                promise.resolve(null);
             }
         });
     }
@@ -100,8 +96,14 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setMetadata(ReadableMap metadata) {
-        Smooch.setMessageModifierDelegate(new MessageModifierDelegate() {
+        Smooch.setMessageModifierDelegate(new CustomMessageDelegate() {
             @Override
+            public Message beforeDisplay(ConversationDetails conversationDetails, Message message){
+                return message;
+            }
+            public Message beforeNotification(String conversationId, Message message) {
+                return message;
+            }
             public Message beforeSend(ConversationDetails conversationDetails, Message message) {
                 message.setMetadata(getProperties(metadata));
 
@@ -109,7 +111,6 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
             }
         });
     }
-
 
     private Map<String, Object> getProperties(ReadableMap properties) {
         ReadableMapKeySetIterator iterator = properties.keySetIterator();
