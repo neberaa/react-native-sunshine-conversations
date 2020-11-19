@@ -40,7 +40,7 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
         Smooch.login(userId, jwt, new SmoochCallback<LoginResult>() {
             @Override
             public void run(Response<LoginResult> response) {
-            Log.v("SMOOCH Login", response.getStatus);
+            Log.v("SMOOCH Login", response.getStatus();
                 if (promise != null) {
                     if (response.getError() != null) {
                         promise.reject("" + response.getStatus(), response.getError());
