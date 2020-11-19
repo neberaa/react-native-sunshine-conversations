@@ -12,6 +12,7 @@ import com.facebook.react.bridge.Promise;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.lang.String;
 
 import io.smooch.core.Smooch;
 import io.smooch.core.SmoochCallback;
@@ -124,7 +125,13 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
         return props;
     }
 
-    abstract class CustomMessageDelegate implements MessageModifierDelegate {
+    class CustomMessageDelegate implements MessageModifierDelegate {
+        public Message beforeDisplay(ConversationDetails conversationDetails, Message message){
+
+        }
+        public Message beforeNotification(String conversationId, Message message) {
+
+        }
         public Message beforeSend(ConversationDetails conversationDetails, Message message) {
             Map<String, Object> meta = new HashMap<>();
             meta.put("short_property_code", "DVU001");
