@@ -21,7 +21,8 @@ import io.smooch.ui.ConversationActivity;
 import io.smooch.core.MessageModifierDelegate;
 import io.smooch.core.Message;
 import io.smooch.core.ConversationDetails;
-import io.smooch.core.InitializationStatus;
+import io.smooch.core.LogoutResult;
+import io.smooch.core.LoginResult;
 
 public class ReactNativeSmooch extends ReactContextBaseJavaModule {
     @Override
@@ -35,9 +36,9 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void login(String userId, String jwt, final Promise promise) {
-        Smooch.login(userId, jwt, new SmoochCallback<InitializationStatus>() {
+        Smooch.login(userId, jwt, new SmoochCallback<LoginResult>() {
             @Override
-            public void run(Response<InitializationStatus> response) {
+            public void run(Response<LoginResult> response) {
                 if (promise != null) {
                     if (response.getError() != null) {
                         promise.reject("" + response.getStatus(), response.getError());
@@ -52,9 +53,9 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void logout(final Promise promise) {
-        Smooch.logout(new SmoochCallback<InitializationStatus>() {
+        Smooch.logout(new SmoochCallback<LogoutResult>() {
             @Override
-            public void run(Response<InitializationStatus> response) {
+            public void run(Response<LogoutResult> response) {
                 if (response.getError() != null) {
                     promise.reject("" + response.getStatus(), response.getError());
                     return;
