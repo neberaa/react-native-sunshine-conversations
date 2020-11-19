@@ -19,6 +19,7 @@ import io.smooch.core.User;
 import io.smooch.ui.ConversationActivity;
 import io.smooch.core.MessageModifierDelegate;
 import io.smooch.core.Message;
+import io.smooch.core.ConversationDetails;
 
 public class ReactNativeSmooch extends ReactContextBaseJavaModule {
     @Override
@@ -94,11 +95,9 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setMetadata(ReadableMap metadata) {
+    public void setMetadata() {
         MessageDelegate delegate = new MessageDelegate();
-        Smooch.setMessageModifierDelegate(delegate) {
-            delegate.beforeSend(Message message, ReadableMap metadata);
-        }
+        Smooch.setMessageModifierDelegate(delegate);
     }
 
     @ReactMethod
@@ -126,8 +125,9 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
     }
 
     class MessageDelegate implements MessageModifierDelegate {
-        Message beforeSend(Message message, ReadableMap metadata) {
-            message.setMetadata(getProperties(metadata));
+        Message beforeSend(ConversationDetails conversationDetails, Message message) {
+            Map<String, Object> meta = getProperties({"short_property_code": "DVU001"})
+            message.setMetadata(meta);
 
             return message;
         }
