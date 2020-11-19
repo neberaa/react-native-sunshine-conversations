@@ -16,6 +16,7 @@ import java.lang.String;
 
 import io.smooch.core.Smooch;
 import io.smooch.core.SmoochCallback;
+import io.smooch.core.SmoochCallback.Response;
 import io.smooch.core.User;
 import io.smooch.ui.ConversationActivity;
 import io.smooch.core.MessageModifierDelegate;
