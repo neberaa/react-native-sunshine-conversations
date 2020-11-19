@@ -92,27 +92,38 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setUserProperties(ReadableMap properties) {
-        User.getCurrentUser().addProperties(getUserProperties(properties));
+    public void setMetadata(ReadableMap metadata) {
+        Smooch.setMessageModifierDelegate(
+        @Override
+        public void beforeSend(Message message) {
+            message.setMetadata(getProperties(metadata));
+
+            return message;
+        })
     }
 
-    private Map<String, Object> getUserProperties(ReadableMap properties) {
+    @ReactMethod
+    public void setUserProperties(ReadableMap properties) {
+        User.getCurrentUser().addProperties(getProperties(properties));
+    }
+
+    private Map<String, Object> getProperties(ReadableMap properties) {
         ReadableMapKeySetIterator iterator = properties.keySetIterator();
-        Map<String, Object> userProperties = new HashMap<>();
+        Map<String, Object> props = new HashMap<>();
 
         while (iterator.hasNextKey()) {
             String key = iterator.nextKey();
             ReadableType type = properties.getType(key);
             if (type == ReadableType.Boolean) {
-                userProperties.put(key, properties.getBoolean(key));
+                props.put(key, properties.getBoolean(key));
             } else if (type == ReadableType.Number) {
-                userProperties.put(key, properties.getDouble(key));
+                props.put(key, properties.getDouble(key));
             } else if (type == ReadableType.String) {
-                userProperties.put(key, properties.getString(key));
+                props.put(key, properties.getString(key));
             }
         }
 
-        return userProperties;
+        return props;
     }
 
 }
