@@ -103,10 +103,6 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
         Smooch.setMessageModifierDelegate(delegate);
     }
 
-    @ReactMethod
-    public void setUserProperties(ReadableMap properties) {
-        User.getCurrentUser().addProperties(getProperties(properties));
-    }
 
     private Map<String, Object> getProperties(ReadableMap properties) {
         ReadableMapKeySetIterator iterator = properties.keySetIterator();
