@@ -13,7 +13,6 @@ import com.facebook.react.bridge.Promise;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.lang.String;
 
 import io.smooch.core.Smooch;
 import io.smooch.core.SmoochCallback;
