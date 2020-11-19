@@ -127,7 +127,7 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
     class MessageDelegate implements MessageModifierDelegate {
         Message beforeSend(ConversationDetails conversationDetails, Message message) {
             Map<String, Object> meta = new HashMap<>();
-            meta.get("test").get("test 2")
+            meta.get("test").get("test 2");
             message.setMetadata(meta);
 
             return message;
