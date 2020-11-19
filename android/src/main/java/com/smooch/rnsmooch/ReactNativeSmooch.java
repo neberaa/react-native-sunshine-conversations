@@ -127,10 +127,10 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
 
     class CustomMessageDelegate implements MessageModifierDelegate {
         public Message beforeDisplay(ConversationDetails conversationDetails, Message message){
-
+            return message;
         }
         public Message beforeNotification(String conversationId, Message message) {
-
+            return message;
         }
         public Message beforeSend(ConversationDetails conversationDetails, Message message) {
             Map<String, Object> meta = new HashMap<>();
