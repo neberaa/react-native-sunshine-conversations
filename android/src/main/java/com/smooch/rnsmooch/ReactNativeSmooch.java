@@ -17,6 +17,8 @@ import io.smooch.core.Smooch;
 import io.smooch.core.SmoochCallback;
 import io.smooch.core.User;
 import io.smooch.ui.ConversationActivity;
+import io.smooch.core.MessageModifierDelegate;
+import io.smooch.core.Message;
 
 public class ReactNativeSmooch extends ReactContextBaseJavaModule {
     @Override
@@ -62,7 +64,7 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void show() {
-        ConversationActivity.show(getReactApplicationContext(), Intent.FLAG_ACTIVITY_NEW_TASK);
+        ConversationActivity.builder().show(getReactApplicationContext(), Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
     @ReactMethod
@@ -93,12 +95,10 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setMetadata(ReadableMap metadata) {
-        Smooch.setMessageModifierDelegate(MessageModifierDelegate delegate) {
-            delegate.beforeSend(Message message) {
-                message.setMetadata(getProperties(metadata));
-
-                return message;
-            }
+        MessageDelegate delegate = new MessageDelegate();
+        Smooch.setMessageModifierDelegate(delegate) {
+            delegate.beforeSend(Message message, ReadableMap metadata);
+        }
     }
 
     @ReactMethod
@@ -123,6 +123,14 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
         }
 
         return props;
+    }
+
+    class MessageDelegate implements MessageModifierDelegate {
+        Message beforeSend(Message message, ReadableMap metadata) {
+            message.setMetadata(getProperties(metadata));
+
+            return message;
+        }
     }
 
 }
