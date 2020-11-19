@@ -39,8 +39,8 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
     public void login(String userId, String jwt, final Promise promise) {
         Smooch.login(userId, jwt, new SmoochCallback<LoginResult>() {
             @Override
-            public void run(@NonNull Response<LoginResult> response) {
-                if (response.getData() == InitializationStatus.SUCCESS) {
+            public void run(Response<LoginResult> response) {
+                if (response.getData() == LoginResult.SUCCESS) {
                     promise.resolve(null);
                 } else {
                     promise.reject(response.getError());
@@ -53,8 +53,8 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
     public void logout(final Promise promise) {
         Smooch.logout(new SmoochCallback<LogoutResult>() {
             @Override
-            public void run(@NonNull Response<LogoutResult> response) {
-                if (response.getData() == InitializationStatus.SUCCESS) {
+            public void run(Response<LogoutResult> response) {
+                if (response.getData() == LogoutResult.SUCCESS) {
                     promise.resolve(null);
                 } else {
                     promise.reject(response.getError());
@@ -96,7 +96,7 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setMetadata(ReadableMap metadata) {
-        Smooch.setMessageModifierDelegate(new CustomMessageDelegate() {
+        Smooch.setMessageModifierDelegate(new MessageModifierDelegate() {
             @Override
             public Message beforeDisplay(ConversationDetails conversationDetails, Message message){
                 return message;
