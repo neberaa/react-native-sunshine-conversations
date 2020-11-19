@@ -38,7 +38,7 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
     @ReactMethod
     public void login(String userId, String jwt, final Promise promise) {
         Smooch.login(userId, jwt);
-        promise.resolve();
+        promise.resolve("Login resolve");
     }
 
     @ReactMethod
