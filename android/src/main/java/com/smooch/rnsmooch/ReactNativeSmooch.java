@@ -93,13 +93,12 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setMetadata(ReadableMap metadata) {
-        Smooch.setMessageModifierDelegate(
-        @Override
-        public void beforeSend(Message message) {
-            message.setMetadata(getProperties(metadata));
+        Smooch.setMessageModifierDelegate(MessageModifierDelegate delegate) {
+            delegate.beforeSend(Message message) {
+                message.setMetadata(getProperties(metadata));
 
-            return message;
-        })
+                return message;
+            }
     }
 
     @ReactMethod
