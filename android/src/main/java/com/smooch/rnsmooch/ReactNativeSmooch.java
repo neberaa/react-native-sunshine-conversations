@@ -38,7 +38,17 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
     @ReactMethod
     public void login(String userId, String jwt, final Promise promise) {
         Smooch.login(userId, jwt, new SmoochCallback<LoginResult>() {
-            promise.resolve("Login resolve");
+            @Override
+            public void run(Response<LoginResult> response) {
+                if (promise != null) {
+                    if (response.getError() != null) {
+                        promise.reject("" + response.getStatus(), response.getError());
+                        return;
+                    }
+
+                    promise.resolve(null);
+                }
+            }
         });
     }
 
@@ -89,9 +99,15 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setMetadata() {
-        CustomMessageDelegate delegate = new CustomMessageDelegate();
-        Smooch.setMessageModifierDelegate(delegate);
+    public void setMetadata(ReadableMap metadata) {
+        Smooch.setMessageModifierDelegate(new CustomMessageDelegate() {
+            @Override
+            public Message beforeSend(ConversationDetails conversationDetails, Message message) {
+                message.setMetadata(getProperties(metadata));
+
+                return message;
+            }
+        });
     }
 
 
@@ -121,13 +137,7 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
         public Message beforeNotification(String conversationId, Message message) {
             return message;
         }
-        public Message beforeSend(ConversationDetails conversationDetails, Message message) {
-            Map<String, Object> meta = new HashMap<>();
-            meta.put("short_property_code", "DVU001");
-            message.setMetadata(meta);
 
-            return message;
-        }
     }
 
 }
