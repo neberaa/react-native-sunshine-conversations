@@ -130,14 +130,4 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
         return props;
     }
 
-    class CustomMessageDelegate implements MessageModifierDelegate {
-        public Message beforeDisplay(ConversationDetails conversationDetails, Message message){
-            return message;
-        }
-        public Message beforeNotification(String conversationId, Message message) {
-            return message;
-        }
-
-    }
-
 }
