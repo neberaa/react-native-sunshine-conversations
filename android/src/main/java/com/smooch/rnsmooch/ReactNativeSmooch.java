@@ -1,6 +1,7 @@
 package com.smooch.rnsmooch;
 
 import android.content.Intent;
+import android.util.Log;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -16,7 +17,6 @@ import java.lang.String;
 
 import io.smooch.core.Smooch;
 import io.smooch.core.SmoochCallback;
-import io.smooch.core.SmoochCallback.Response;
 import io.smooch.core.User;
 import io.smooch.ui.ConversationActivity;
 import io.smooch.core.MessageModifierDelegate;
@@ -40,13 +40,14 @@ public class ReactNativeSmooch extends ReactContextBaseJavaModule {
         Smooch.login(userId, jwt, new SmoochCallback<LoginResult>() {
             @Override
             public void run(Response<LoginResult> response) {
+            Log.v("SMOOCH Login", response.getStatus);
                 if (promise != null) {
                     if (response.getError() != null) {
                         promise.reject("" + response.getStatus(), response.getError());
                         return;
                     }
 
-                    promise.resolve(null);
+                    promise.resolve(response.getStatus());
                 }
             }
         });
