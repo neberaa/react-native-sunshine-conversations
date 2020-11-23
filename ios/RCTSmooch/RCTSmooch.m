@@ -98,12 +98,6 @@ RCT_EXPORT_METHOD(setEmail:(NSString*)email) {
   [SKTUser currentUser].email = email;
 };
 
-RCT_EXPORT_METHOD(setMetaData:(NSDictionary*)metadata) {
-  NSLog(@"Smooch setMetaData");
-    SKTMessage *updatedMessage = [[SKTMessage alloc] init];
-    updatedMessage.metadata = metadata;
-    [Smooch conversation].delegate = [[SKTConversationDelegate alloc] willSendMessage:updatedMessages];
-};
 RCT_EXPORT_METHOD(setSignedUpAt:(NSDate*)date) {
   NSLog(@"Smooch setSignedUpAt");
 
